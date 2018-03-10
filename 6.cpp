@@ -24,6 +24,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
+#include <deque>
 using namespace std;
 
 /**
@@ -82,9 +83,30 @@ void post_order_print(tree_node * root) {
     cout << root->val << " ";
 }
 
+void layer_print(tree_node *root) {
+    if (root == NULL)
+        return;
+
+    deque<tree_node *> q;
+    q.push_back(root);
+
+    tree_node *node;
+    while (!q.empty()) {
+        node = q.front();
+        if (node->left != NULL)
+            q.push_back(node->left);
+        if (node->right != NULL)
+            q.push_back(node->right);
+        cout << node->val << " ";
+        q.pop_front();
+    }
+}
+
 int main(int argc, char **argv) {
     tree_node *tree = create_tree(g_preorder, g_inorder, 8);
     post_order_print(tree);
+    cout << endl;
+    layer_print(tree);
     cout << endl;
 
     return 0;
